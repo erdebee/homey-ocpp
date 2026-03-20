@@ -1,0 +1,19 @@
+{
+  "name": "OCPP EV Charger Controller",
+  "description": "Control EV chargers through OCPP protocol - Homey acts as Central System",
+  "settings": {
+    "ocpp_server_port": "OCPP Server Port",
+    "ocpp_auth_enabled": "Enable Authentication",
+    "ocpp_auth_username": "Auth Username", 
+    "ocpp_auth_password": "Auth Password"
+  },
+  "capabilities": {
+    "charging_status": "Charging Status",
+    "connected": "Connected",
+    "protocol_version": "Protocol Version"
+  },
+  "protocol_versions": {
+    "1.6": "OCPP 1.6-J",
+    "2.0": "OCPP 2.0.1"
+  }
+}

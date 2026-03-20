@@ -1,0 +1,205 @@
+{
+  "app": {
+    "name": "OCPP EV Lader",
+    "description": "Beheer EV laadstations via OCPP protocol"
+  },
+  "capabilities": {
+    "charging_status": {
+      "title": "Laadstatus",
+      "values": {
+        "Available": "Beschikbaar",
+        "Preparing": "Voorbereiden",
+        "Charging": "Laden",
+        "Suspended": "Gepauzeerd",
+        "Finishing": "Afronden",
+        "Reserved": "Gereserveerd",
+        "Unavailable": "Niet beschikbaar",
+        "Faulted": "Fout",
+        "Unknown": "Onbekend"
+      }
+    },
+    "connected": {
+      "title": "Verbonden"
+    },
+    "protocol_version": {
+      "title": "Protocol Versie",
+      "values": {
+        "1.6": "OCPP 1.6-J",
+        "2.0": "OCPP 2.0.1"
+      }
+    }
+  },
+  "drivers": {
+    "ev-charger": {
+      "name": "EV Laadstation",
+      "class": "Laadstation",
+      "capabilities": {
+        "charging_status": "Laadstatus",
+        "connected": "Verbonden",
+        "protocol_version": "Protocol Versie"
+      },
+      "pair": {
+        "list_devices": {
+          "title": "Selecteer uw EV laadstation",
+          "intro": "Kies een laadstation uit de lijst van verbonden laadstations, of voeg er handmatig een toe als deze niet in de lijst staat.",
+          "no_devices": "Geen laadstations gevonden. Gebruik handmatige pairing om uw laadstation toe te voegen.",
+          "manual_title": "Laadstation handmatig toevoegen",
+          "manual_description": "Als uw laadstation niet hierboven staat, kunt u het handmatig toevoegen door het ID op te geven.",
+          "add_manual": "Handmatig toevoegen",
+          "select": "Selecteren"
+        },
+        "charger_details": {
+          "title": "EV Laadstation handmatig toevoegen",
+          "intro": "Voer de details van uw EV laadstation in om het toe te voegen aan Homey. Uw laadstation moet worden geconfigureerd om verbinding te maken met deze OCPP server.",
+          "connection_title": "Verbindingsinformatie",
+          "connection_description": "Configureer uw laadstation om verbinding te maken met:",
+          "charger_id": "Laadstation ID *",
+          "charger_id_placeholder": "bijv. CHARGER001, mijn-lader",
+          "charger_id_help": "Dit moet overeenkomen met het laadstation ID dat in uw laadstation is geconfigureerd. Alleen letters, cijfers, underscores en koppeltekens toegestaan.",
+          "name": "Apparaatnaam",
+          "name_placeholder": "bijv. Garage Lader",
+          "name_help": "Vriendelijke naam voor dit laadstation in Homey. Wordt automatisch gegenereerd indien leeg.",
+          "model": "Laadstation Model",
+          "model_placeholder": "bijv. ABB Terra AC",
+          "model_help": "Optioneel. Wordt automatisch bijgewerkt wanneer het laadstation verbinding maakt.",
+          "firmware": "Firmware Versie",
+          "firmware_placeholder": "bijv. 1.2.3",
+          "firmware_help": "Optioneel. Wordt automatisch bijgewerkt wanneer het laadstation verbinding maakt.",
+          "back": "Terug",
+          "add": "Laadstation toevoegen"
+        }
+      },
+      "settings": {
+        "charger_id": "Laadstation ID",
+        "charger_model": "Model",
+        "firmware_version": "Firmware Versie"
+      }
+    }
+  },
+  "flow": {
+    "actions": {
+      "start_charging": {
+        "title": "Start laden",
+        "titleFormatted": "Start laden op connector [[connector_id]]",
+        "hint": "Start het laadproces op het geselecteerde laadstation",
+        "args": {
+          "connector_id": {
+            "title": "Connector",
+            "values": {
+              "1": "Connector 1",
+              "2": "Connector 2"
+            }
+          }
+        }
+      },
+      "stop_charging": {
+        "title": "Stop laden",
+        "titleFormatted": "Stop laden",
+        "hint": "Stop het laadproces op het geselecteerde laadstation"
+      },
+      "set_charger_availability": {
+        "title": "Stel beschikbaarheid in",
+        "titleFormatted": "Stel beschikbaarheid in op [[available]] voor connector [[connector_id]]",
+        "hint": "Schakel het laadstation in of uit",
+        "args": {
+          "available": {
+            "title": "Beschikbaar",
+            "values": {
+              "true": "Ja",
+              "false": "Nee"
+            }
+          },
+          "connector_id": {
+            "title": "Connector",
+            "values": {
+              "1": "Connector 1",
+              "2": "Connector 2"
+            }
+          }
+        }
+      }
+    },
+    "triggers": {
+      "charging_started": {
+        "title": "Laden gestart",
+        "titleFormatted": "Laden gestart",
+        "hint": "Wordt geactiveerd wanneer het laden start",
+        "tokens": {
+          "charger_id": {
+            "title": "Laadstation ID",
+            "example": "CHARGER001"
+          },
+          "connector_id": {
+            "title": "Connector ID",
+            "example": "1"
+          },
+          "id_tag": {
+            "title": "Autorisatie tag",
+            "example": "USER123"
+          },
+          "transaction_id": {
+            "title": "Transactie ID",
+            "example": "12345"
+          }
+        }
+      },
+      "charging_stopped": {
+        "title": "Laden gestopt",
+        "titleFormatted": "Laden gestopt",
+        "hint": "Wordt geactiveerd wanneer het laden stopt",
+        "tokens": {
+          "charger_id": {
+            "title": "Laadstation ID",
+            "example": "CHARGER001"
+          },
+          "connector_id": {
+            "title": "Connector ID",
+            "example": "1"
+          },
+          "transaction_id": {
+            "title": "Transactie ID",
+            "example": "12345"
+          },
+          "energy_consumed": {
+            "title": "Verbruikte energie (kWh)",
+            "example": "25.5"
+          },
+          "duration_minutes": {
+            "title": "Duur (minuten)",
+            "example": "120"
+          }
+        }
+      },
+      "charger_connected": {
+        "title": "Laadstation verbonden",
+        "titleFormatted": "Laadstation verbonden",
+        "hint": "Wordt geactiveerd wanneer een laadstation verbinding maakt",
+        "tokens": {
+          "charger_id": {
+            "title": "Laadstation ID",
+            "example": "CHARGER001"
+          },
+          "model": {
+            "title": "Model",
+            "example": "ABB Terra AC"
+          },
+          "vendor": {
+            "title": "Fabrikant",
+            "example": "ABB"
+          }
+        }
+      },
+      "charger_disconnected": {
+        "title": "Laadstation losgekoppeld",
+        "titleFormatted": "Laadstation losgekoppeld",
+        "hint": "Wordt geactiveerd wanneer een laadstation de verbinding verbreekt",
+        "tokens": {
+          "charger_id": {
+            "title": "Laadstation ID",
+            "example": "CHARGER001"
+          }
+        }
+      }
+    }
+  }
+}

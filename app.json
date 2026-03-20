@@ -1,0 +1,687 @@
+{
+  "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
+  "id": "nl.pulsive.ocpp",
+  "version": "1.0.0",
+  "compatibility": ">=12.4.0",
+  "sdk": 3,
+  "runtime": "nodejs",
+  "platforms": [
+    "local"
+  ],
+  "name": {
+    "en": "OCPP EV Charger Controller",
+    "nl": "OCPP EV Lader Controller"
+  },
+  "description": {
+    "en": "Control EV chargers through OCPP protocol - Homey acts as Central System",
+    "nl": "Bestuur EV laders via OCPP protocol - Homey fungeert als Centraal Systeem"
+  },
+  "category": [
+    "appliances"
+  ],
+  "brandColor": "#4CAF50",
+  "permissions": [
+    "homey:manager:api"
+  ],
+  "settings": [
+    {
+      "id": "ocpp_server_port",
+      "type": "number",
+      "title": {
+        "en": "OCPP Server Port",
+        "nl": "OCPP Server Poort"
+      },
+      "value": 9000,
+      "min": 1024,
+      "max": 65535,
+      "hint": {
+        "en": "Port for OCPP WebSocket server (requires app restart)",
+        "nl": "Poort voor OCPP WebSocket server (vereist app herstart)"
+      }
+    },
+    {
+      "id": "ocpp_auth_enabled",
+      "type": "checkbox",
+      "title": {
+        "en": "Enable Authentication",
+        "nl": "Authenticatie Inschakelen"
+      },
+      "value": false,
+      "hint": {
+        "en": "Require HTTP Basic Authentication from chargers",
+        "nl": "Vereist HTTP Basic Authenticatie van laders"
+      }
+    },
+    {
+      "id": "ocpp_auth_username",
+      "type": "text",
+      "title": {
+        "en": "Auth Username",
+        "nl": "Auth Gebruikersnaam"
+      },
+      "value": "charger",
+      "hint": {
+        "en": "Username for charger authentication",
+        "nl": "Gebruikersnaam voor lader authenticatie"
+      }
+    },
+    {
+      "id": "ocpp_auth_password",
+      "type": "password",
+      "title": {
+        "en": "Auth Password",
+        "nl": "Auth Wachtwoord"
+      },
+      "value": "password",
+      "hint": {
+        "en": "Password for charger authentication",
+        "nl": "Wachtwoord voor lader authenticatie"
+      }
+    }
+  ],
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "Roy Brondgeest",
+    "email": "roy@pulsive.nl"
+  },
+  "contributors": {
+    "developers": [
+      {
+        "name": "Roy Brondgeest",
+        "email": "roy@pulsive.nl"
+      }
+    ]
+  },
+  "source": "https://github.com/roybrondgeest/homey-ocpp",
+  "homepage": "https://github.com/roybrondgeest/homey-ocpp",
+  "bugs": {
+    "url": "https://github.com/roybrondgeest/homey-ocpp/issues"
+  },
+  "flow": {
+    "triggers": [
+      {
+        "id": "charger_connected",
+        "title": {
+          "en": "Charger connected",
+          "nl": "Lader verbonden"
+        },
+        "titleFormatted": {
+          "en": "Charger connected",
+          "nl": "Lader verbonden"
+        },
+        "hint": {
+          "en": "Triggered when a charger connects to the OCPP server",
+          "nl": "Geactiveerd wanneer een lader verbindt met de OCPP server"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=ev-charger"
+          }
+        ]
+      },
+      {
+        "id": "charger_disconnected",
+        "title": {
+          "en": "Charger disconnected",
+          "nl": "Lader losgekoppeld"
+        },
+        "titleFormatted": {
+          "en": "Charger disconnected",
+          "nl": "Lader losgekoppeld"
+        },
+        "hint": {
+          "en": "Triggered when a charger disconnects from the OCPP server",
+          "nl": "Geactiveerd wanneer een lader loskoppelt van de OCPP server"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=ev-charger"
+          }
+        ]
+      },
+      {
+        "id": "charging_started",
+        "title": {
+          "en": "Charging started",
+          "nl": "Laden gestart"
+        },
+        "titleFormatted": {
+          "en": "Charging started",
+          "nl": "Laden gestart"
+        },
+        "hint": {
+          "en": "Triggered when charging starts on a charger",
+          "nl": "Geactiveerd wanneer laden start op een lader"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=ev-charger"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "connector_id",
+            "type": "number",
+            "title": {
+              "en": "Connector ID",
+              "nl": "Connector ID"
+            }
+          },
+          {
+            "name": "id_tag",
+            "type": "string",
+            "title": {
+              "en": "ID Tag",
+              "nl": "ID Tag"
+            }
+          }
+        ]
+      },
+      {
+        "id": "charging_stopped",
+        "title": {
+          "en": "Charging stopped",
+          "nl": "Laden gestopt"
+        },
+        "titleFormatted": {
+          "en": "Charging stopped",
+          "nl": "Laden gestopt"
+        },
+        "hint": {
+          "en": "Triggered when charging stops on a charger",
+          "nl": "Geactiveerd wanneer laden stopt op een lader"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=ev-charger"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "energy_consumed",
+            "type": "number",
+            "title": {
+              "en": "Energy consumed (kWh)",
+              "nl": "Verbruikte energie (kWh)"
+            }
+          },
+          {
+            "name": "transaction_id",
+            "type": "number",
+            "title": {
+              "en": "Transaction ID",
+              "nl": "Transactie ID"
+            }
+          }
+        ]
+      },
+      {
+        "id": "status_changed",
+        "title": {
+          "en": "Status changed",
+          "nl": "Status veranderd"
+        },
+        "titleFormatted": {
+          "en": "Status changed",
+          "nl": "Status veranderd"
+        },
+        "hint": {
+          "en": "Triggered when charger status changes",
+          "nl": "Geactiveerd wanneer de lader status verandert"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=ev-charger"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "new_status",
+            "type": "string",
+            "title": {
+              "en": "New status",
+              "nl": "Nieuwe status"
+            }
+          },
+          {
+            "name": "previous_status",
+            "type": "string",
+            "title": {
+              "en": "Previous status",
+              "nl": "Vorige status"
+            }
+          }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "title": {
+          "en": "Pause charging",
+          "nl": "Pauzeer laden"
+        },
+        "titleFormatted": {
+          "en": "Pause charging",
+          "nl": "Pauzeer laden"
+        },
+        "hint": {
+          "en": "Pause the current charging session on the selected charger",
+          "nl": "Pauzeer de huidige laadsessie op de geselecteerde lader"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=ev-charger"
+          }
+        ],
+        "id": "pause_charging"
+      },
+      {
+        "title": {
+          "en": "Resume charging",
+          "nl": "Hervat laden"
+        },
+        "titleFormatted": {
+          "en": "Resume charging",
+          "nl": "Hervat laden"
+        },
+        "hint": {
+          "en": "Resume the paused charging session on the selected charger",
+          "nl": "Hervat de gepauzeerde laadsessie op de geselecteerde lader"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=ev-charger"
+          }
+        ],
+        "id": "resume_charging"
+      },
+      {
+        "id": "set_charger_availability",
+        "title": {
+          "en": "Set charger availability",
+          "nl": "Stel lader beschikbaarheid in"
+        },
+        "titleFormatted": {
+          "en": "Set availability to [[available]]",
+          "nl": "Stel beschikbaarheid in op [[available]]"
+        },
+        "hint": {
+          "en": "Enable or disable the charger",
+          "nl": "Schakel de lader in of uit"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=ev-charger"
+          },
+          {
+            "type": "dropdown",
+            "name": "available",
+            "title": {
+              "en": "Available",
+              "nl": "Beschikbaar"
+            },
+            "values": [
+              {
+                "id": "true",
+                "title": {
+                  "en": "Available",
+                  "nl": "Beschikbaar"
+                }
+              },
+              {
+                "id": "false",
+                "title": {
+                  "en": "Unavailable",
+                  "nl": "Niet beschikbaar"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "start_charging",
+        "title": {
+          "en": "Start charging",
+          "nl": "Start laden"
+        },
+        "titleFormatted": {
+          "en": "Start charging with connector [[connector_id]]",
+          "nl": "Start laden met connector [[connector_id]]"
+        },
+        "hint": {
+          "en": "Start a charging session on the selected charger",
+          "nl": "Start een laadsessie op de geselecteerde lader"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=ev-charger"
+          },
+          {
+            "type": "dropdown",
+            "name": "connector_id",
+            "title": {
+              "en": "Connector",
+              "nl": "Connector"
+            },
+            "values": [
+              {
+                "id": "1",
+                "title": {
+                  "en": "Connector 1",
+                  "nl": "Connector 1"
+                }
+              },
+              {
+                "id": "2",
+                "title": {
+                  "en": "Connector 2",
+                  "nl": "Connector 2"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "stop_charging",
+        "title": {
+          "en": "Stop charging",
+          "nl": "Stop laden"
+        },
+        "titleFormatted": {
+          "en": "Stop charging",
+          "nl": "Stop laden"
+        },
+        "hint": {
+          "en": "Stop the current charging session on the selected charger",
+          "nl": "Stop de huidige laadsessie op de geselecteerde lader"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=ev-charger"
+          }
+        ]
+      }
+    ]
+  },
+  "drivers": [
+    {
+      "name": {
+        "en": "EV Charger"
+      },
+      "class": "socket",
+      "capabilities": [
+        "charging_status",
+        "connected",
+        "protocol_version",
+        "charging_start",
+        "charging_stop",
+        "charging_pause",
+        "charging_resume",
+        "measure_power",
+        "meter_power",
+        "measure_voltage",
+        "measure_current",
+        "target_current"
+      ],
+      "images": {
+        "large": "/drivers/ev-charger/assets/images/large.png",
+        "small": "/drivers/ev-charger/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "instructions",
+          "navigation": {
+            "next": "list_chargers"
+          }
+        },
+        {
+          "id": "list_chargers",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_chargers"
+          }
+        },
+        {
+          "id": "add_chargers",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "id": "charger_id",
+          "type": "text",
+          "label": {
+            "en": "Charger ID"
+          },
+          "value": ""
+        },
+        {
+          "id": "charger_model",
+          "type": "text",
+          "label": {
+            "en": "Charger Model"
+          },
+          "value": ""
+        },
+        {
+          "id": "firmware_version",
+          "type": "text",
+          "label": {
+            "en": "Firmware Version"
+          },
+          "value": ""
+        }
+      ],
+      "id": "ev-charger"
+    }
+  ],
+  "capabilities": {
+    "charging_pause": {
+      "type": "boolean",
+      "title": {
+        "en": "Pause charging",
+        "nl": "Pauzeer laden"
+      },
+      "getable": false,
+      "setable": true,
+      "uiComponent": "button",
+      "uiQuickAction": true,
+      "icon": "/assets/icons/pause.svg"
+    },
+    "charging_resume": {
+      "type": "boolean",
+      "title": {
+        "en": "Resume charging",
+        "nl": "Hervat laden"
+      },
+      "getable": false,
+      "setable": true,
+      "uiComponent": "button",
+      "uiQuickAction": true,
+      "icon": "/assets/icons/play.svg"
+    },
+    "charging_start": {
+      "type": "boolean",
+      "title": {
+        "en": "Start charging",
+        "nl": "Start laden"
+      },
+      "getable": false,
+      "setable": true,
+      "uiComponent": "button",
+      "uiQuickAction": true,
+      "icon": "/assets/icons/play.svg"
+    },
+    "charging_status": {
+      "type": "enum",
+      "title": {
+        "en": "Charging Status",
+        "nl": "Laad Status"
+      },
+      "desc": {
+        "en": "Current OCPP charging status",
+        "nl": "Huidige OCPP laad status"
+      },
+      "values": [
+        {
+          "id": "Available",
+          "title": {
+            "en": "Available",
+            "nl": "Beschikbaar"
+          }
+        },
+        {
+          "id": "Preparing",
+          "title": {
+            "en": "Preparing",
+            "nl": "Voorbereiden"
+          }
+        },
+        {
+          "id": "Charging",
+          "title": {
+            "en": "Charging",
+            "nl": "Laden"
+          }
+        },
+        {
+          "id": "SuspendedEVSE",
+          "title": {
+            "en": "Suspended (Charger)",
+            "nl": "Gepauzeerd (Lader)"
+          }
+        },
+        {
+          "id": "SuspendedEV",
+          "title": {
+            "en": "Suspended (Vehicle)",
+            "nl": "Gepauzeerd (Voertuig)"
+          }
+        },
+        {
+          "id": "Finishing",
+          "title": {
+            "en": "Finishing",
+            "nl": "Afronden"
+          }
+        },
+        {
+          "id": "Reserved",
+          "title": {
+            "en": "Reserved",
+            "nl": "Gereserveerd"
+          }
+        },
+        {
+          "id": "Unavailable",
+          "title": {
+            "en": "Unavailable",
+            "nl": "Niet Beschikbaar"
+          }
+        },
+        {
+          "id": "Faulted",
+          "title": {
+            "en": "Faulted",
+            "nl": "Storing"
+          }
+        }
+      ],
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "icon": "/assets/images/charging-status.svg"
+    },
+    "charging_stop": {
+      "type": "boolean",
+      "title": {
+        "en": "Stop charging",
+        "nl": "Stop laden"
+      },
+      "getable": false,
+      "setable": true,
+      "uiComponent": "button",
+      "uiQuickAction": true,
+      "icon": "/assets/icons/stop.svg"
+    },
+    "connected": {
+      "type": "boolean",
+      "title": {
+        "en": "Connected",
+        "nl": "Verbonden"
+      },
+      "desc": {
+        "en": "Whether the charger is connected to the OCPP server",
+        "nl": "Of de lader verbonden is met de OCPP server"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "icon": "/assets/images/connected.svg"
+    },
+    "protocol_version": {
+      "type": "string",
+      "title": {
+        "en": "Protocol Version",
+        "nl": "Protocol Versie"
+      },
+      "desc": {
+        "en": "OCPP protocol version used by the charger",
+        "nl": "OCPP protocol versie gebruikt door de lader"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "icon": "/assets/images/connected.svg"
+    },
+    "target_current": {
+      "type": "number",
+      "title": {
+        "en": "Maximum charging current",
+        "nl": "Maximale laadstroom"
+      },
+      "desc": {
+        "en": "Set the maximum charging current in Amperes",
+        "nl": "Stel de maximale laadstroom in Ampères in"
+      },
+      "units": {
+        "en": "A",
+        "nl": "A"
+      },
+      "min": 6,
+      "max": 32,
+      "step": 1,
+      "getable": true,
+      "setable": true,
+      "uiComponent": "slider",
+      "uiQuickAction": false,
+      "icon": "/assets/icons/current.svg"
+    }
+  }
+}

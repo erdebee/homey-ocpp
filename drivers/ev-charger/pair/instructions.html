@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OCPP Charger Setup Instructions</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 12px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 22px;
+            text-align: center;
+        }
+        .step {
+            margin-bottom: 24px;
+            padding: 0;
+            position: relative;
+        }
+        .step:not(:last-child):after {
+            content: '';
+            display: block;
+            height: 1px;
+            background: linear-gradient(to right, #e9ecef 0%, #007bff 20%, #007bff 80%, #e9ecef 100%);
+            margin: 20px 0 0 0;
+        }
+        .step-number {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            font-weight: bold;
+            margin-right: 12px;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .step-title {
+            font-weight: bold;
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid #f8f9fa;
+            padding-bottom: 8px;
+        }
+        .step-content {
+            color: #666;
+            line-height: 1.5;
+        }
+        .websocket-info {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            border-radius: 4px;
+            padding: 12px;
+            margin: 12px 0;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 13px;
+            word-break: break-all;
+            overflow-x: auto;
+        }
+        .websocket-info div {
+            margin: 4px 0;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-waiting {
+            background: #ffc107;
+        }
+        .status-connected {
+            background: #28a745;
+        }
+        .status-section {
+            background: #fff3cd;
+            border-left: 3px solid #ffc107;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .status-section.connected {
+            background: #d4edda;
+            border-left-color: #28a745;
+        }
+        .step-content ul {
+            margin: 12px 0;
+            padding-left: 24px;
+        }
+        .step-content li {
+            margin-bottom: 6px;
+        }
+        .refresh-info {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔌 OCPP Charger Setup</h1>
+        
+        <div class="step">
+            <div class="step-title">
+                <span class="step-number">1</span>Connect to Your Charging Point
+            </div>
+            <div class="step-content">
+                Configure your EV charging point to connect to the OCPP server using one of these WebSocket URLs:
+                <div class="websocket-info" id="websocket-urls">
+                    Loading network information...
+                </div>
+                <small style="color: #666;">
+                    💡 Use the URL that matches your network setup. Most chargers work with the local IP address.
+                </small>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-title">
+                <span class="step-number">2</span>Configure OCPP Settings
+            </div>
+            <div class="step-content">
+                In your charging point configuration:
+                <ul>
+                    <li><strong>Protocol:</strong> OCPP 1.6 JSON or OCPP 2.0.1 JSON</li>
+                    <li><strong>WebSocket URL:</strong> One of the URLs above</li>
+                    <li><strong>Charge Point ID:</strong> A unique identifier for your charger</li>
+                    <li><strong>Heartbeat Interval:</strong> 60 seconds (recommended)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-title">
+                <span class="step-number">3</span>Wait for Connection
+            </div>
+            <div class="step-content">
+                Once configured, your charging point should connect automatically.
+                
+                <div class="status-section" id="status-section">
+                    <div id="connection-status">
+                        <span class="status-indicator status-waiting"></span>
+                        Waiting for charging points to connect...
+                    </div>
+                    <div id="charger-count">No chargers detected yet</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="refresh-info">
+            Checking for connected chargers every 3 seconds...
+        </div>
+    </div>
+
+    <script>
+        let checkInterval;
+        
+        // Get network interfaces and display WebSocket URLs
+        function displayWebSocketUrls() {
+            // Get the current host from window location
+            const currentHost = window.location.hostname;
+            const port = 3000; // OCPP server port
+
+            const urls = [
+                `ws://${currentHost}:${port}/`
+            ];
+            
+            // Check if hostname contains IP address with dashes (e.g., 192-168-68-64.homey.homeylocal.com)
+            if (currentHost.includes('.')) {
+                const firstPart = currentHost.split('.')[0];
+                
+                // Check if first part looks like an IP with dashes (4 parts separated by dashes)
+                if (firstPart.includes('-')) {
+                    const ipParts = firstPart.split('-');
+                    
+                    // Validate it looks like an IP address (4 numeric parts, each 0-255)
+                    if (ipParts.length === 4 && ipParts.every(part => {
+                        const num = parseInt(part, 10);
+                        return !isNaN(num) && num >= 0 && num <= 255 && part === num.toString();
+                    })) {
+                        const extractedIP = ipParts.join('.');
+                        urls.splice(0, 0, `ws://${extractedIP}:${port}/`); // Insert as first URL
+                    }
+                }
+            }
+            
+            
+
+            // Remove duplicates
+            const uniqueUrls = [...new Set(urls)];
+            
+            document.getElementById('websocket-urls').innerHTML = uniqueUrls.map(url => 
+                `<div>${url}</div>`
+            ).join('');
+        }
+        
+        // Check for connected chargers
+        async function checkConnectedChargers() {
+            try {
+                // This will be handled by the Homey pairing session
+                if (window.Homey && window.Homey.emit) {
+                    const result = await window.Homey.emit('check_connected_chargers');
+                    updateChargerStatus(result.chargers || []);
+                } else {
+                    // Fallback for testing
+                    console.log('Homey API not available, using fallback');
+                    updateChargerStatus([]);
+                }
+            } catch (error) {
+                console.error('Error checking chargers:', error);
+                updateChargerStatus([]);
+            }
+        }
+        
+        // Update the UI based on charger status
+        function updateChargerStatus(chargers) {
+            const statusSection = document.getElementById('status-section');
+            const connectionStatus = document.getElementById('connection-status');
+            const chargerCount = document.getElementById('charger-count');
+            
+            if (chargers.length > 0) {
+                statusSection.classList.add('connected');
+                connectionStatus.innerHTML = '<span class="status-indicator status-connected"></span>Charging points connected!';
+                chargerCount.textContent = `Found ${chargers.length} charging point${chargers.length > 1 ? 's' : ''} ready for pairing`;
+            } else {
+                statusSection.classList.remove('connected');
+                connectionStatus.innerHTML = '<span class="status-indicator status-waiting"></span>Waiting for charging points to connect...';
+                chargerCount.textContent = 'No new chargers detected yet';
+            }
+        }
+        
+        // Initialize the page when Homey tells us to
+        function initializePage() {
+            displayWebSocketUrls();
+            
+            // Start checking for chargers immediately and then every 3 seconds
+            checkConnectedChargers();
+            checkInterval = setInterval(checkConnectedChargers, 3000);
+        }
+        
+        // Listen for Homey events
+        if (window.Homey) {
+            // Initialize when the view is ready
+            Homey.on('view_ready', function() {
+                initializePage();
+            });
+            
+            // Handle cleanup when leaving view
+            Homey.on('view_cleanup', function() {
+                if (checkInterval) {
+                    clearInterval(checkInterval);
+                    checkInterval = null;
+                }
+            });
+        } else {
+            // Fallback for testing outside Homey environment
+            setTimeout(initializePage, 100);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+{"extends": "@tsconfig/node16/tsconfig.json", "compilerOptions": {"allowJs": true, "outDir": ".homeybuild/", "target": "es2017", "typeRoots": ["@types", "node_modules/@types"]}}

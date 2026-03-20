@@ -1,0 +1,69 @@
+{
+  "name": {
+    "en": "EV Charger"
+  },
+  "class": "socket",
+  "capabilities": [
+    "charging_status",
+    "connected",
+    "protocol_version",
+    "charging_start",
+    "charging_stop",
+    "charging_pause",
+    "charging_resume",
+    "measure_power",
+    "meter_power",
+    "measure_voltage",
+    "measure_current",
+    "target_current"
+  ],
+  "images": {
+    "large": "/drivers/ev-charger/assets/images/large.png",
+    "small": "/drivers/ev-charger/assets/images/small.png"
+  },
+  "pair": [
+    {
+      "id": "instructions",
+      "navigation": {
+        "next": "list_chargers"
+      }
+    },
+    {
+      "id": "list_chargers",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_chargers"
+      }
+    },
+    {
+      "id": "add_chargers",
+      "template": "add_devices"
+    }
+  ],
+  "settings": [
+    {
+      "id": "charger_id",
+      "type": "text",
+      "label": {
+        "en": "Charger ID"
+      },
+      "value": ""
+    },
+    {
+      "id": "charger_model",
+      "type": "text",
+      "label": {
+        "en": "Charger Model"
+      },
+      "value": ""
+    },
+    {
+      "id": "firmware_version",
+      "type": "text",
+      "label": {
+        "en": "Firmware Version"
+      },
+      "value": ""
+    }
+  ]
+}
