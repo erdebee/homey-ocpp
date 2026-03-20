@@ -1,0 +1,46 @@
+{
+  "id": "start_charging",
+  "title": {
+    "en": "Start charging",
+    "nl": "Start laden"
+  },
+  "titleFormatted": {
+    "en": "Start charging with connector [[connector_id]]",
+    "nl": "Start laden met connector [[connector_id]]"
+  },
+  "hint": {
+    "en": "Start a charging session on the selected charger",
+    "nl": "Start een laadsessie op de geselecteerde lader"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=ev-charger"
+    },
+    {
+      "type": "dropdown",
+      "name": "connector_id",
+      "title": {
+        "en": "Connector",
+        "nl": "Connector"
+      },
+      "values": [
+        {
+          "id": "1",
+          "title": {
+            "en": "Connector 1",
+            "nl": "Connector 1"
+          }
+        },
+        {
+          "id": "2",
+          "title": {
+            "en": "Connector 2",
+            "nl": "Connector 2"
+          }
+        }
+      ]
+    }
+  ]
+}

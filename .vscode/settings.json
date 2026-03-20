@@ -1,0 +1,16 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^homey app validate$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^homey app build$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^homey app run$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}

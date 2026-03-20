@@ -1,0 +1,40 @@
+{
+  "id": "status_changed",
+  "title": {
+    "en": "Status changed",
+    "nl": "Status veranderd"
+  },
+  "titleFormatted": {
+    "en": "Status changed",
+    "nl": "Status veranderd"
+  },
+  "hint": {
+    "en": "Triggered when charger status changes",
+    "nl": "Geactiveerd wanneer de lader status verandert"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=ev-charger"
+    }
+  ],
+  "tokens": [
+    {
+      "name": "new_status",
+      "type": "string",
+      "title": {
+        "en": "New status",
+        "nl": "Nieuwe status"
+      }
+    },
+    {
+      "name": "previous_status",
+      "type": "string",
+      "title": {
+        "en": "Previous status",
+        "nl": "Vorige status"
+      }
+    }
+  ]
+}

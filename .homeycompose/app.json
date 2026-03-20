@@ -1,0 +1,103 @@
+{
+  "id": "nl.pulsive.ocpp",
+  "version": "1.0.0",
+  "compatibility": ">=12.4.0",
+  "sdk": 3,
+  "runtime": "nodejs",
+  "platforms": [
+    "local"
+  ],
+  "name": {
+    "en": "OCPP EV Charger Controller",
+    "nl": "OCPP EV Lader Controller"
+  },
+  "description": {
+    "en": "Control EV chargers through OCPP protocol - Homey acts as Central System",
+    "nl": "Bestuur EV laders via OCPP protocol - Homey fungeert als Centraal Systeem"
+  },
+  "category": [
+    "appliances"
+  ],
+  "brandColor": "#4CAF50",
+  "permissions": [
+    "homey:manager:api"
+  ],
+  "settings": [
+    {
+      "id": "ocpp_server_port",
+      "type": "number",
+      "title": {
+        "en": "OCPP Server Port",
+        "nl": "OCPP Server Poort"
+      },
+      "value": 9000,
+      "min": 1024,
+      "max": 65535,
+      "hint": {
+        "en": "Port for OCPP WebSocket server (requires app restart)",
+        "nl": "Poort voor OCPP WebSocket server (vereist app herstart)"
+      }
+    },
+    {
+      "id": "ocpp_auth_enabled",
+      "type": "checkbox",
+      "title": {
+        "en": "Enable Authentication",
+        "nl": "Authenticatie Inschakelen"
+      },
+      "value": false,
+      "hint": {
+        "en": "Require HTTP Basic Authentication from chargers",
+        "nl": "Vereist HTTP Basic Authenticatie van laders"
+      }
+    },
+    {
+      "id": "ocpp_auth_username",
+      "type": "text",
+      "title": {
+        "en": "Auth Username",
+        "nl": "Auth Gebruikersnaam"
+      },
+      "value": "charger",
+      "hint": {
+        "en": "Username for charger authentication",
+        "nl": "Gebruikersnaam voor lader authenticatie"
+      }
+    },
+    {
+      "id": "ocpp_auth_password",
+      "type": "password",
+      "title": {
+        "en": "Auth Password",
+        "nl": "Auth Wachtwoord"
+      },
+      "value": "password",
+      "hint": {
+        "en": "Password for charger authentication",
+        "nl": "Wachtwoord voor lader authenticatie"
+      }
+    }
+  ],
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "Roy Brondgeest",
+    "email": "roy@pulsive.nl"
+  },
+  "contributors": {
+    "developers": [
+      {
+        "name": "Roy Brondgeest",
+        "email": "roy@pulsive.nl"
+      }
+    ]
+  },
+  "source": "https://github.com/roybrondgeest/homey-ocpp",
+  "homepage": "https://github.com/roybrondgeest/homey-ocpp",
+  "bugs": {
+    "url": "https://github.com/roybrondgeest/homey-ocpp/issues"
+  }
+}

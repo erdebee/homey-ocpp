@@ -1,0 +1,22 @@
+{
+  "id": "charger_disconnected",
+  "title": {
+    "en": "Charger disconnected",
+    "nl": "Lader losgekoppeld"
+  },
+  "titleFormatted": {
+    "en": "Charger disconnected",
+    "nl": "Lader losgekoppeld"
+  },
+  "hint": {
+    "en": "Triggered when a charger disconnects from the OCPP server",
+    "nl": "Geactiveerd wanneer een lader loskoppelt van de OCPP server"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=ev-charger"
+    }
+  ]
+}

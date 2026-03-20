@@ -1,0 +1,21 @@
+{
+  "title": {
+    "en": "Resume charging",
+    "nl": "Hervat laden"
+  },
+  "titleFormatted": {
+    "en": "Resume charging",
+    "nl": "Hervat laden"
+  },
+  "hint": {
+    "en": "Resume the paused charging session on the selected charger",
+    "nl": "Hervat de gepauzeerde laadsessie op de geselecteerde lader"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=ev-charger"
+    }
+  ]
+}

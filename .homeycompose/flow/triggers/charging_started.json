@@ -1,0 +1,40 @@
+{
+  "id": "charging_started",
+  "title": {
+    "en": "Charging started",
+    "nl": "Laden gestart"
+  },
+  "titleFormatted": {
+    "en": "Charging started",
+    "nl": "Laden gestart"
+  },
+  "hint": {
+    "en": "Triggered when charging starts on a charger",
+    "nl": "Geactiveerd wanneer laden start op een lader"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=ev-charger"
+    }
+  ],
+  "tokens": [
+    {
+      "name": "connector_id",
+      "type": "number",
+      "title": {
+        "en": "Connector ID",
+        "nl": "Connector ID"
+      }
+    },
+    {
+      "name": "id_tag",
+      "type": "string",
+      "title": {
+        "en": "ID Tag",
+        "nl": "ID Tag"
+      }
+    }
+  ]
+}

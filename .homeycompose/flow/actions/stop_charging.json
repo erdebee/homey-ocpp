@@ -1,0 +1,22 @@
+{
+  "id": "stop_charging",
+  "title": {
+    "en": "Stop charging",
+    "nl": "Stop laden"
+  },
+  "titleFormatted": {
+    "en": "Stop charging",
+    "nl": "Stop laden"
+  },
+  "hint": {
+    "en": "Stop the current charging session on the selected charger",
+    "nl": "Stop de huidige laadsessie op de geselecteerde lader"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=ev-charger"
+    }
+  ]
+}

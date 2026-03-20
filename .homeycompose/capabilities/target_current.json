@@ -1,0 +1,23 @@
+{
+  "type": "number",
+  "title": {
+    "en": "Maximum charging current",
+    "nl": "Maximale laadstroom"
+  },
+  "desc": {
+    "en": "Set the maximum charging current in Amperes",
+    "nl": "Stel de maximale laadstroom in Ampères in"
+  },
+  "units": {
+    "en": "A",
+    "nl": "A"
+  },
+  "min": 6,
+  "max": 32,
+  "step": 1,
+  "getable": true,
+  "setable": true,
+  "uiComponent": "slider",
+  "uiQuickAction": false,
+  "icon": "/assets/icons/current.svg"
+}

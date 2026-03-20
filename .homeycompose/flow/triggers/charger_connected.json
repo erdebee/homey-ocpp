@@ -1,0 +1,22 @@
+{
+  "id": "charger_connected",
+  "title": {
+    "en": "Charger connected",
+    "nl": "Lader verbonden"
+  },
+  "titleFormatted": {
+    "en": "Charger connected",
+    "nl": "Lader verbonden"
+  },
+  "hint": {
+    "en": "Triggered when a charger connects to the OCPP server",
+    "nl": "Geactiveerd wanneer een lader verbindt met de OCPP server"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=ev-charger"
+    }
+  ]
+}

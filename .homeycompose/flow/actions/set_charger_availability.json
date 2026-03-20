@@ -1,0 +1,46 @@
+{
+  "id": "set_charger_availability",
+  "title": {
+    "en": "Set charger availability",
+    "nl": "Stel lader beschikbaarheid in"
+  },
+  "titleFormatted": {
+    "en": "Set availability to [[available]]",
+    "nl": "Stel beschikbaarheid in op [[available]]"
+  },
+  "hint": {
+    "en": "Enable or disable the charger",
+    "nl": "Schakel de lader in of uit"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=ev-charger"
+    },
+    {
+      "type": "dropdown",
+      "name": "available",
+      "title": {
+        "en": "Available",
+        "nl": "Beschikbaar"
+      },
+      "values": [
+        {
+          "id": "true",
+          "title": {
+            "en": "Available",
+            "nl": "Beschikbaar"
+          }
+        },
+        {
+          "id": "false",
+          "title": {
+            "en": "Unavailable",
+            "nl": "Niet beschikbaar"
+          }
+        }
+      ]
+    }
+  ]
+}

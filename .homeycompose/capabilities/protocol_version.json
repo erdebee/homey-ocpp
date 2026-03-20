@@ -1,0 +1,15 @@
+{
+  "type": "string",
+  "title": {
+    "en": "Protocol Version",
+    "nl": "Protocol Versie"
+  },
+  "desc": {
+    "en": "OCPP protocol version used by the charger",
+    "nl": "OCPP protocol versie gebruikt door de lader"
+  },
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "icon": "/assets/images/connected.svg"
+}

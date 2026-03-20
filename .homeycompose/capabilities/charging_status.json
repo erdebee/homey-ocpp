@@ -1,0 +1,80 @@
+{
+  "type": "enum",
+  "title": {
+    "en": "Charging Status",
+    "nl": "Laad Status"
+  },
+  "desc": {
+    "en": "Current OCPP charging status",
+    "nl": "Huidige OCPP laad status"
+  },
+  "values": [
+    {
+      "id": "Available",
+      "title": {
+        "en": "Available",
+        "nl": "Beschikbaar"
+      }
+    },
+    {
+      "id": "Preparing",
+      "title": {
+        "en": "Preparing",
+        "nl": "Voorbereiden"
+      }
+    },
+    {
+      "id": "Charging",
+      "title": {
+        "en": "Charging",
+        "nl": "Laden"
+      }
+    },
+    {
+      "id": "SuspendedEVSE",
+      "title": {
+        "en": "Suspended (Charger)",
+        "nl": "Gepauzeerd (Lader)"
+      }
+    },
+    {
+      "id": "SuspendedEV",
+      "title": {
+        "en": "Suspended (Vehicle)",
+        "nl": "Gepauzeerd (Voertuig)"
+      }
+    },
+    {
+      "id": "Finishing",
+      "title": {
+        "en": "Finishing",
+        "nl": "Afronden"
+      }
+    },
+    {
+      "id": "Reserved",
+      "title": {
+        "en": "Reserved",
+        "nl": "Gereserveerd"
+      }
+    },
+    {
+      "id": "Unavailable",
+      "title": {
+        "en": "Unavailable",
+        "nl": "Niet Beschikbaar"
+      }
+    },
+    {
+      "id": "Faulted",
+      "title": {
+        "en": "Faulted",
+        "nl": "Storing"
+      }
+    }
+  ],
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "icon": "/assets/images/charging-status.svg"
+}

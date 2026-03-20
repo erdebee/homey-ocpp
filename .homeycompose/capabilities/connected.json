@@ -1,0 +1,15 @@
+{
+  "type": "boolean",
+  "title": {
+    "en": "Connected",
+    "nl": "Verbonden"
+  },
+  "desc": {
+    "en": "Whether the charger is connected to the OCPP server",
+    "nl": "Of de lader verbonden is met de OCPP server"
+  },
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "icon": "/assets/images/connected.svg"
+}

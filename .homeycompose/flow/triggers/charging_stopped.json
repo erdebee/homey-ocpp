@@ -1,0 +1,40 @@
+{
+  "id": "charging_stopped",
+  "title": {
+    "en": "Charging stopped",
+    "nl": "Laden gestopt"
+  },
+  "titleFormatted": {
+    "en": "Charging stopped",
+    "nl": "Laden gestopt"
+  },
+  "hint": {
+    "en": "Triggered when charging stops on a charger",
+    "nl": "Geactiveerd wanneer laden stopt op een lader"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=ev-charger"
+    }
+  ],
+  "tokens": [
+    {
+      "name": "energy_consumed",
+      "type": "number",
+      "title": {
+        "en": "Energy consumed (kWh)",
+        "nl": "Verbruikte energie (kWh)"
+      }
+    },
+    {
+      "name": "transaction_id",
+      "type": "number",
+      "title": {
+        "en": "Transaction ID",
+        "nl": "Transactie ID"
+      }
+    }
+  ]
+}
